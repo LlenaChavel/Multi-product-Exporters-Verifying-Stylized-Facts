@@ -1,0 +1,27 @@
+\documentclass{article}
+\usepackage{threeparttable}
+\usepackage{graphicx} 
+\usepackage{booktabs}
+\begin{document}
+\begin{table}[h]
+\centering
+\resizebox{1\width}{!}{ 
+\begin{threeparttable}
+\caption{Summary Statistics for the Chinese Exporters to the US}
+\begin{tabular}{lcccc} \hline\hline
+Scope                       &     1        &   2         &    3-4   &  5+      \\
+\hline
+Exporter Share with Scope   & 41      & 20     & 19  &  20 \\
+Mean Total Firm sales       & 907      & 1826     & 3141  & 10185  \\
+Mean Top Ranked Product         & 907      & 1679     & 2689  &  7184 \\
+Mean Bottom Ranked Product  & 907      & 147     & 45  & 8  \\
+\hline\hline
+\end{tabular}
+\begin{tablenotes}
+\small
+\item  \noindent  \footnotesize{The table splits the sample of exporters from China to the US according to the number of products that they exported in 2003  into exporters with 1,2,3-4, and 5 or more products. For each group it reports the share of exporters, mean total exporter sales and mean sales of the best and least-selling products. Sales are in thousands of USD.}
+\end{tablenotes}
+\end{threeparttable}
+}
+\end{table}
+\end{document}
