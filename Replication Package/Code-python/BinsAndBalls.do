@@ -21,7 +21,7 @@ set more off
 
 // Assign directories and local variables 
 
-global drive  "C:\Users\Lena Sheveleva\OneDrive - Cardiff University\MPF_Facts_And_Fiction\Submit folder\Replication Package"
+global drive  "C:\Users\Lena Sheveleva\OneDrive - Cardiff University\MPF_Facts_And_Fiction\Submit folder\repo Multi-product-Exporters-Verifying-Stylized-Facts\Replication Package"
 local dirData "$drive\Data-Stata"
 
 capture mkdir "$drive\wd"
@@ -64,34 +64,12 @@ export delimited v using "`Includes'\Balls_US.csv", novarnames replace
 ********************************************************************************
 
 use  "`dirData'\\`country'_1.dta",clear 
-
-collapse (sum) v ,by(f d)
-
-export delimited v using "`Includes'\Balls_All.csv", novarnames replace
-********************************************************************************
-
-use  "`dirData'\\`country'_1.dta",clear 
 keep if d=="502" |d=="USA"
 
 collapse (sum) v ,by(f hs)
 gen n_prod=1
 collapse (sum) n_prod ,by(f )
 export delimited n_prod using "`Includes'\nprod_data.csv", novarnames replace
-
-********************************************************************************
-
-use  "`dirData'\\`country'_1.dta",clear
-
-keep if d=="502" |d=="USA"
-
-collapse (sum) v ,by(f hs)
-bysort f: egen nprod=count(hs)
-egen R = rank(v), by(f) field
-
-collapse (mean) v  ,by(R nprod )
-gen l_sales = log(v)
-drop v
-export delimited nprod R l_sales using "`Includes'\RankProductData.csv",   replace
 
 ********************************************************************************
 
