@@ -6,3 +6,6 @@ MEX.dta
 MEX_1.dta
 *.csv
 *.docx
+exporters_at_dest.dta
+PMC_only_world.dta
+rank_corr_data_PMC.dta
