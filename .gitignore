@@ -9,3 +9,6 @@ MEX_1.dta
 exporters_at_dest.dta
 PMC_only_world.dta
 rank_corr_data_PMC.dta
+Replication Package/wd/PMC_only_world.dta
+Replication Package/wd/exporters_at_dest.dta
+Replication Package/wd/rank_corr_data_PMC.dta
