@@ -168,14 +168,6 @@ file write myfile  "\documentclass{article}" _n  ///
 				    "\begin{threeparttable}" _n  ///
 					"\captionsetup{width=0.9\textwidth} " _n  ///
 					"\caption{Full Sample Simple Correlation between Global Ranks Elsewhere  and Local Rankings. (`country')  \label{FS_correlation}}" _n  ///
-					"\begin{tabular}{cl} \hline\hline" _n  ///
-                    "             &    Correlation \\\cmidrule{1-2}% " _n  ///
-					" Data        &    `d_corr_else_simple' \\" _n  ///
-					" Model       &    `s_corr_else_simple' \\" _n  ///
-					"\hline\hline" _n  ///
-					"\end{tabular}" _n  ///
-					"\end{threeparttable}" _n  ///
-					"\end{table}"  _n ///
 					"\end{document}" _n
 file close myfile
 
