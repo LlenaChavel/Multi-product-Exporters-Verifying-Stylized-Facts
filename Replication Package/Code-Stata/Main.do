@@ -76,7 +76,7 @@ do "`stataCodes'\Figure2.do"  "`Includes'"  "`country'"
 do "`stataCodes'\Table1.do" "`Includes'" "`S'" "`country'"
 
 // Tables 2 & 3 
-do "`stataCodes'\Tables-2-and-3.do"   "`dirData'" "`Includes'" "`S'" "`country'" // 
+do "`stataCodes'\Tables-2-and-3.do"   "`dirData'" "`Includes'" "`S'" "`country'" "`year'"  // 
 
 // Table 1  and Figure 1 Appendix
 if "`country'"=="China"{
