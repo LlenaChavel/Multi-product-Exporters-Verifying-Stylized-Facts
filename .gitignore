@@ -14,3 +14,5 @@ rank_corr_data_PMC.dta
 "Replication Package/wd/rank_corr_data_PMC.dta"
 "Replication Package/wd/*.dta"
 *.gz
+av_sales-*.pdf
+!av_sales-US-502.pdf
