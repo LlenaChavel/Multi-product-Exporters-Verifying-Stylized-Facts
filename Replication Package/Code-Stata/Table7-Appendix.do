@@ -4,7 +4,6 @@ args    dirData Includes S  stataCodes country
 do "`stataCodes'\EvaluateExcludeRank.do"  "`S'" // 
 
 ************************************************************************************************************************************************
-
 *Count the number of observations in a group
 bysort f nbctry nprod_gl: gen obs=_n
 replace obs=0 if obs>1
@@ -13,22 +12,23 @@ bysort nbctry nprod_gl: egen total = total (obs)
 		
 drop if total <25
 
-	
+generate party_origin_interact = f +"_"+ d
+
 foreach x in  2 3  4  5 6 10 20 {
 
-foreach y in  2 3 4 5 6 10 20 { 
-
+foreach y in  2 3 4 5 6 10 20{ 
+    
 		*check number of observations in a group:
 		count if nbctry==`x' & nprod_gl==`y'
 			
 		if r(N) > 0 {
-		
-	        * Adjusted correlation in the data - evaluated once 
+
+			* Adjusted correlation in the data - evaluated once 
 			// adj for firm X destination fixed effects
-			qui reg  exportrank rankExclude i.nprod i.ndest if nbctry==`x' & nprod_gl==`y'
+			qui areg  exportrank rankExclude if nbctry==`x' & nprod_gl==`y', absorb(party_origin_interact)
 			local R_full=e(r2)
 
-			qui reg  exportrank i.nprod i.ndest if nbctry==`x' & nprod_gl==`y'
+			qui areg  exportrank if nbctry==`x' & nprod_gl==`y', absorb(party_origin_interact)
 			local R_minus=e(r2)
 
 			local adj_corr =sqrt((`R_full'-`R_minus')/(1-`R_minus'))
@@ -41,13 +41,14 @@ foreach y in  2 3 4 5 6 10 20 {
 			* Adjusted correlation in the simulated data - evaluated S times and averaged
 			*local d_corr`x'_`y'a : di %3.2f int(r(rho)*100)/100
 		
+			
 			local av_corr=0
 			forvalues i=1(1)`S'{				
 				
-				qui reg rankPMC`i' rankExclude`i' i.nprod i.ndest  if nbctry==`x' & nprod_gl==`y'
+				areg  rankPMC`i' rankExclude`i' if nbctry==`x' & nprod_gl==`y', absorb(party_origin_interact)
 				local R_full=e(r2)
 				
-				qui reg rankPMC`i' i.nprod i.ndest if nbctry==`x' & nprod_gl==`y'
+				areg  rankPMC`i' if nbctry==`x' & nprod_gl==`y', absorb(party_origin_interact)
 				local R_minus=e(r2)
 				
 				if (`R_full'>`R_minus' & `R_minus'<1){
@@ -57,23 +58,28 @@ foreach y in  2 3 4 5 6 10 20 {
 				    local adj_corr=0
 				}
 				
+				display " x= `x' y= `y' i=`i'"
+				display "`adj_corr'"
+				display "`R_full'"
+				display "`R_minus'"
+				display "`av_corr'"
+				display "1-`R_minus'"
+				display "`R_full'-`R_minus'"
 		
 				local av_corr=`adj_corr'/`S'+`av_corr'
 		    }
 	    
-		local s_corr`x'_`y' : di %3.2f int(`av_corr'*100)/100
+			local s_corr`x'_`y' : di %3.2f int(`av_corr'*100)/100
+			display " x = `x' y = `y'"
+			display "s_corr`x'_`y' =`s_corr`x'_`y''"
+			display "`av_corr'"
 		
-		display " x = `x' y = `y'"
-				
-		display "s_corr`x'_`y' =`s_corr`x'_`y''"
-		display "`av_corr'"
 		}
 		else{
 			local s_corr`x'_`y' "."
 			local d_corr`x'_`y' "."
 		}
-		
-		}
+	}
 
 }
 
@@ -83,15 +89,15 @@ local name  "Table7-Appendix"
 
 file open myfile using "`Includes'\\`name'.tex", write replace
 file write myfile  "\documentclass{article}" _n  ///
-					"\usepackage{threeparttable}" _n  ///
+				   "\usepackage{threeparttable}" _n  ///
 				   "\usepackage{graphicx} " _n  ///
-				   "\usepackage{booktabs}" _n  ///
-				   "\begin{document}" _n  ///
-				   "\begin{table}[h]" _n  ///
+				   "\usepackage{booktabs}" _n  ///	   
+					"\begin{document}" _n  ///
+					"\begin{table}[h]" _n  ///
 				   "\centering" _n  ///
 					"\resizebox{1\width}{!}{ " _n  ///
 					"\begin{threeparttable}" _n  ///
-					"\caption{Within  correlation between products' global  ranks elsewhere and their  local  ranks   adjusted for the  number of products exported to each destination and the number of destinations each product reaches. (`country') \label{ExludeLocal-PMC-Baseline}}" _n  ///
+					"\caption{Within  Correlation between Products' Global  Ranks Elsewhere and Their  Local  Ranks  Adjusted for the Interaction Between  Firm and  Destination Fixed  Effects. (`country') \label{ExludeLocal-PMC-FirmXDest}}" _n  ///
 					"\begin{tabular}{cllllllll} \hline\hline" _n  ///
                     "&\multicolumn{6}{c}{Number of products}\\" _n  ///
 					"To number of countries       &           2  &   3            &    4          &  5         &6-9         &10-19       &20+\\\cmidrule{2-8}% " _n  ///
@@ -116,10 +122,17 @@ file write myfile  "\documentclass{article}" _n  ///
 					"\end{tabular}" _n  ///
 					"\begin{tablenotes}" _n  ///
 					"\small" _n  ///
-					"\item  \noindent  \footnotesize{\emph{Note:} Correlation is reported conditional on both the overall number of products a firm exports and the number of destinations reached. Correlation is evaluated for groups that contain at least 25 firms. }" _n  ///
+				    "\item  \noindent  \footnotesize{\emph{Note:} Correlation is reported conditional on both the overall number of products a firm exports and the number of destinations reached. Correlation is evaluated for groups that contain at least 25 firms. }" _n  ///
 					"\end{tablenotes}" _n  ///
 					"\end{threeparttable}" _n  ///
 					"}" _n  ///
 					"\end{table}"  _n ///
 					"\end{document}" _n
 file close myfile
+
+/*
+erase "temp.dta"
+erase "data_by_country.dta"
+erase "exporters_at_dest.dta"
+erase "PMC_only_world.dta"
+erase "rank_corr_data_PMC.dta"
