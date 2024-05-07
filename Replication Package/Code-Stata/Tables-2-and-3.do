@@ -5,7 +5,7 @@
 * - Includes: Directory for saving output files.
 * - S: Number of simulations.
 * - country: Specific country for the analysis.
-args   dirData Includes S country
+args   dirData Includes S country year
 
 
 // Conditional setup for China to use predefined destinations; otherwise, use dynamic destinations from data.
@@ -185,7 +185,7 @@ file write myfile  "\documentclass{article}" _n  ///
 				   "\centering" _n ///
 				   "\resizebox{1\width}{!}{ " _n ///
 				   "\begin{threeparttable}" _n ///
-				   "\caption{Simple rank correlation for product sales at 10 most popular destinations. (`country' , `year') \label{SimpleRankCorr_Select1st_SP}}" _n ///
+				   "\caption{Simple rank correlation for product sales at 10 most popular destinations. (`country', `year') \label{SimpleRankCorr_Select1st_SP}}" _n ///
 				   "\begin{tabular}{lrrrrrrrrrr}" _n ///
 				   "\hline" _n ///
 				   "\hline" _n ///
