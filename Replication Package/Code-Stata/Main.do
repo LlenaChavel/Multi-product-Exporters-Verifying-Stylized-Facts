@@ -17,7 +17,7 @@ set more off
 
 // adjust drive and country variables 
 // change drive to location of the 
-global drive  "C:\Users\Lena Sheveleva\OneDrive - Cardiff University\MPF_Facts_And_Fiction\Submit folder\Replication Package"
+global drive  "C:\Users\Lena Sheveleva\OneDrive - Cardiff University\MPF_Facts_And_Fiction\Submit folder\repo Multi-product-Exporters-Verifying-Stylized-Facts\Replication Package"
 local country "China" // can take value "MEX" or China (aas well as ALB (years 2004-2014))
 local year =  2003
 
