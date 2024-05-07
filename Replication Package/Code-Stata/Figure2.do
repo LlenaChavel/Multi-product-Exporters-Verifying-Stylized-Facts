@@ -68,9 +68,10 @@ foreach i of local pop_dest {
 		
 							twoway (connected av_log_sales nprod if source=="PMC_by_country_data", msymbol(s))  (connected av_log_sales nprod if source=="PMC_world_sim", msymbol(d)) (connected av_log_sales nprod if source=="PMC_by_country_sim" , msymbol(t)) if d=="`i'",  caption( "`name'") ytitle(Log of Sales) xtitle(Scope) legend(order(1 "data" 2 "PMC (world)"  3 "PMC (by country)")) xlabel(1 2 3 4 5 6 "6+", noticks)
 	
-	// Export the graph for each destination and  incorporate the destination name in the file name.
-	graph export "`Includes'\av_sales-`name'-`i'.pdf", as(pdf) name("Graph") replace 
-
+	if `i'==502{ // comment out the if statement if you want to save results for every country
+		// Export the graph for each destination and  incorporate the destination name in the file name.
+		graph export "`Includes'\av_sales-`name'-`i'.pdf", as(pdf) name("Graph") replace 
+	}
 
 							local j=`j'+1
 						  }
